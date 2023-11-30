@@ -1,3 +1,5 @@
+import "../scss/style.scss";
+
 const previousOperand = document.getElementById("previous-operand");
 const currentOperand = document.getElementById("current-operand");
 

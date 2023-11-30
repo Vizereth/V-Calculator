@@ -1,0 +1,7 @@
+node_modules/
+dist/
+**/*.zip
+version.json
+undefined
+**/*.rar
+.publish
