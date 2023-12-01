@@ -1,0 +1,39 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(http-equiv="X-UA-Compatible", content="IE=edge")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    link(rel="stylesheet", href="css/style.min.css")
+    link(rel="preconnect", href="https://fonts.googleapis.com")
+    link(rel="preconnect", href="https://fonts.gstatic.com", crossorigin)
+    link(href="https://fonts.googleapis.com/css2?family=Poppins&display=swap", rel="stylesheet")
+    title Calculator
+
+  body
+    .container
+      .layout
+        .calculator
+          .output
+            div(data-previous, class="previous")
+            div(data-current, class="current")
+          button(data-clear, class="span-two") Clear
+          button(data-delete) Del
+          button(data-operation) ÷
+          button(data-number) 1
+          button(data-number) 2
+          button(data-number) 3
+          button(data-operation) *
+          button(data-number) 4
+          button(data-number) 5
+          button(data-number) 6
+          button(data-operation) +
+          button(data-number) 7
+          button(data-number) 8
+          button(data-number) 9
+          button(data-operation) -
+          button(data-number) .
+          button(data-number) 0
+          button(data-equals, class="span-two") =
+              
+    script(src="js/app.min.js") 

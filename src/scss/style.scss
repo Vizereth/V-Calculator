@@ -1,94 +1,120 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: content-box;
+@import "null.scss";
+
+$text: white;
+$primary: #7bc8ff;
+$secondary: #30a9ff;
+$shadow: #32aaff;
+
+@mixin layout {
+  background: $primary;
+  box-shadow: 2px 2px 15px rgba($shadow, 0.65);
+}
+
+@mixin output {
+  box-shadow: inset 0px 0px 10px rgba($shadow, 0.75);
+
+  .previous {
+    color: rgba($text, 0.75);
+  }
+}
+
+@mixin button {
+  background: linear-gradient(315deg, $secondary, $primary);
+  box-shadow: 2px 2px 6px rgba($shadow, 0.75);
+
+  &:hover:not(:active) {
+    opacity: 0.7;
+  }
+
+  &:active {
+    background: linear-gradient(315deg, $primary, $secondary);
+    box-shadow: -2px -2px 6px rgba($shadow, 0.75);
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  font-family: sans-serif;
+  font-weight: normal;
+  font-size: 10px;
 }
 
 body {
-  background: #3494e6; /* fallback for old browsers */
-  background: -webkit-linear-gradient(
-    to top,
-    #ec6ead,
-    #3494e6
-  ); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(
-    to top,
-    #ec6ead,
-    #3494e6
-  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: rgba($primary, 0.85);
+  color: $text;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0;
+  margin: 0;
+}
 
+.container {
+  flex: 1;
   display: flex;
   justify-content: center;
-  align-items: center;
-
-  height: 100vh;
+  flex-direction: column;
 }
 
-#root .calculator {
-  display: flex;
-  flex-direction: column;
-
-  background: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 20px 50px rgba(255, 255, 255, 0.1);
-
-  border-radius: 10px;
-  border-top: solid 1px rgba(255, 255, 255, 0.20);
-  border-left: solid 1px rgba(255, 255, 255, 0.20);
+.layout {
+  @include layout;
+  width: 350px;
+  height: 540px;
+  position: relative;
+  border-radius: 20px;
+  justify-content: center;
 }
 
-#root .calculator .display {
-  height: 100px;
+.calculator {
+  height: 500px;
+  display: grid;
+  justify-content: center;
+  grid-template-columns: repeat(4, 70px);
+  grid-template-rows: minmax(100px, auto) repeat(5, 70px);
+}
 
+.calculator > button {
+  margin: 6px;
+  font-size: 2rem;
+  outline: none;
+}
+
+.span-two {
+  grid-column: span 2;
+  height: 90%;
+  width: 95%;
+  border-radius: 5em;
+}
+
+button {
+  @include button;
+  border-radius: 50%;
+  border: none;
+}
+
+.output {
+  @include output;
+  grid-column: 1/ -1;
   display: flex;
-  flex-direction: column;
   align-items: flex-end;
-
+  justify-content: space-around;
+  flex-direction: column;
+  padding: 0px 20px;
   word-wrap: break-word;
   word-break: break-all;
-
-  align-self: flex-end;
-  padding: 0 10px;
+  border-radius: 30px;
+  margin: 35px 0 30px 0;
 }
-
-#root .calculator .display span {
-  color: rgb(255, 255, 255);
-  font-family: "Poppins", sans-serif;
+.output .previous {
   font-size: 20px;
-
-  margin: 10px 10px 10px 0;
+  margin-top: 10px;
 }
 
-#root .calculator .display span:first-of-type {
-  font-size: 18px;
-}
-
-#root .calculator .display span:nth-of-type(2) {
-  font-size: 28px;
-}
-
-#root .calculator table {
-  border-spacing: 2px;
-}
-
-#root .calculator td {
-  width: 75px;
-  height: 75px;
-}
-
-#root .calculator button {
-  width: 100%;
-  height: 100%;
-
-  border: none;
-  border-radius: 7px;
-  outline: none;
-  background-color: transparent;
-
-  color: rgb(255, 255, 255);
-  font-family: "Poppins", sans-serif;
-  font-size: 20px;
-}
-
-#root .calculator button:hover {
-  background-color: rgb(255, 255, 255, 0.15);
+.output .current {
+  font-size: 25px;
+  margin: 5px 0;
 }
