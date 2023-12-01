@@ -1,4 +1,4 @@
-### Javascript Calculator
+# Javascript Calculator
 
 ## Deploy
 
