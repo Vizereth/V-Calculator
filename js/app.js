@@ -1,84 +1,86 @@
 (() => {
     "use strict";
-    var __webpack_exports__ = {};
-    const previousOperand = document.getElementById("previous-operand");
-    const currentOperand = document.getElementById("current-operand");
+    const previousOperand = document.querySelector("[data-previous]");
+    const currentOperand = document.querySelector("[data-current]");
     const numbers = document.querySelectorAll("[data-number]");
     const operations = document.querySelectorAll("[data-operation]");
     const equalsButton = document.querySelector("[data-equals]");
-    const deleteButton = document.querySelector("[data-delete");
+    const deleteButton = document.querySelector("[data-delete]");
     const clearButton = document.querySelector("[data-clear]");
     class Calculator {
         constructor(prev, curr) {
             this.previousOperandElement = prev;
             this.currentOperandElement = curr;
-            this.currentOperand = null;
+            this.currentOperand = "";
+            this.operator = null;
             this.calculated = false;
         }
-        calculate() {
-            let operand = this.currentOperandElement.innerHTML;
-            let result;
-            if ("." === operand.charAt(operand.length - 1)) return;
-            if (isNaN(operand.charAt(operand.length - 1))) operand = operand.substring(0, operand.length - 1);
-            result = eval(operand);
-            this.calculated = true;
-            this.previousOperandElement.innerHTML = operand;
-            this.currentOperandElement.innerHTML = result;
-        }
-        updateCurrentOperand() {
-            const operand = this.currentOperandElement.innerHTML;
-            if (true === this.calculated) {
+        appendNumber(number) {
+            if (this.calculated) {
+                this.clear();
                 this.calculated = false;
-                this.currentOperandElement.innerHTML = "";
             }
-            if (this.checkForDots(operand) && "." === this.currentOperand) return;
-            if (this.checkForOperations(operand)) return;
-            if (this.checkForFirstSymbol(operand)) return;
-            this.currentOperandElement.innerHTML += this.currentOperand;
+            this.currentOperand += number;
+            this.updateDisplay();
         }
-        checkForDots(operand) {
-            const operations = "*-+/";
-            for (let i = operand.length - 1; i >= 0; i--) if ("." === operand.charAt(i)) return true; else if (operations.includes(operand.charAt(i))) return false;
+        chooseOperation(operator) {
+            if (this.calculated) this.calculated = false;
+            if (null !== this.operator) this.calculate();
+            this.operator = operator;
+            this.previousOperandElement.innerHTML = this.currentOperand + " " + this.operator;
+            this.currentOperand = "";
         }
-        checkForOperations(operand) {
-            const lastOperandSymbol = operand.charAt(operand.length - 1);
-            if (isNaN(lastOperandSymbol) && isNaN(this.currentOperand) && "." !== this.currentOperand) return true;
-        }
-        checkForFirstSymbol(operand) {
-            const operations = "*-+/";
-            if ("" === operand && operations.includes(this.currentOperand)) return true;
+        calculate() {
+            let result;
+            const prev = parseFloat(this.previousOperandElement.innerHTML);
+            const current = parseFloat(this.currentOperand);
+            if (isNaN(prev) || isNaN(current)) return;
+            switch (this.operator) {
+              case "+":
+                result = prev + current;
+                break;
+
+              case "-":
+                result = prev - current;
+                break;
+
+              case "*":
+                result = prev * current;
+                break;
+
+              case "/":
+                result = prev / current;
+                break;
+
+              default:
+                return;
+            }
+            this.currentOperand = result.toString();
+            this.operator = null;
+            this.updateDisplay();
+            this.calculated = true;
         }
         deleteFromCurrentOperand() {
-            let operand = this.currentOperandElement.innerHTML;
-            operand = operand.substring(0, operand.length - 1);
-            this.currentOperandElement.innerHTML = operand;
+            this.currentOperand = this.currentOperand.slice(0, -1);
+            this.updateDisplay();
         }
         clear() {
             this.previousOperandElement.innerHTML = "";
-            this.currentOperandElement.innerHTML = "";
-            this.currentOperand = null;
+            this.currentOperand = "";
+            this.operator = null;
+        }
+        updateDisplay() {
+            this.currentOperandElement.innerHTML = this.currentOperand;
         }
     }
     const calculator = new Calculator(previousOperand, currentOperand);
     numbers.forEach((item => {
-        item.addEventListener("click", (function() {
-            calculator.currentOperand = item.innerHTML;
-            calculator.updateCurrentOperand();
-        }));
+        item.addEventListener("click", (() => calculator.appendNumber(item.innerHTML)));
     }));
     operations.forEach((item => {
-        item.addEventListener("click", (function() {
-            calculator.currentOperand = item.innerHTML;
-            calculator.updateCurrentOperand(item.innerHTML);
-        }));
+        item.addEventListener("click", (() => calculator.chooseOperation(item.innerHTML)));
     }));
-    equalsButton.addEventListener("click", (function() {
-        calculator.calculate();
-    }));
-    deleteButton.addEventListener("click", (function() {
-        calculator.deleteFromCurrentOperand();
-    }));
-    clearButton.addEventListener("click", (function() {
-        calculator.clear();
-    }));
+    equalsButton.addEventListener("click", (() => calculator.calculate()));
+    deleteButton.addEventListener("click", (() => calculator.deleteFromCurrentOperand()));
+    clearButton.addEventListener("click", (() => calculator.clear()));
 })();
