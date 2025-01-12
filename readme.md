@@ -2,7 +2,7 @@
 
 ## Deploy
 
-https://sophrona.github.io/V-Calculator
+https://vizereth.github.io/V-Calculator
 
 ## Project setup
 ```
